@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Autofac;
+using MiniProxy.Caching;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Json;
 
@@ -15,6 +16,7 @@ namespace MiniProxy
                 .Register(_ => ReadProxyConfiguration())
                 .As<ProxyConfiguration>()
                 .SingleInstance();
+            builder.Register(CreateCache).As<ICache>().SingleInstance();
 
             return builder.Build();
         }
@@ -26,6 +28,17 @@ namespace MiniProxy
 
             var serializer = new JavaScriptSerializer();
             return serializer.Deserialize<ProxyConfiguration>(content);
+        }
+
+        private static ICache CreateCache(IComponentContext ctx)
+        {
+            var config = ctx.Resolve<ProxyConfiguration>();
+            if (config.EnableCaching)
+            {
+                return new FileCache();
+            }
+
+            return new NullCache();
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿{
-	enableCors: true,
-	endPoints: {
-		"jetbrains-teamcity": "https://teamcity.jetbrains.com/",
-		"codebetter-teamcity": "http://teamcity.codebetter.com/"
-	}
+  enableCors: true,
+  enableCaching: true,
+  endPoints: {
+    "jetbrains-teamcity": "https://teamcity.jetbrains.com/",
+    "codebetter-teamcity": "http://teamcity.codebetter.com/"
+  }
 }
